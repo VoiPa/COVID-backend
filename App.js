@@ -1,14 +1,22 @@
 const express = require('express');
 const API_URL = require('./common/constants');
 const axios = require('axios');
+const _ = require('lodash');
 const app = express();
-let data = null;
+let openData = null;
 
+// Setting port that we are going to listen
 app.listen(5000 ,async()=>{
-  data = await getData();
-  console.log(data);
+  openData = await getData();
+  console.log('Done, we have connection');
 }).on('error', (e) => {
   console.log('Error happened: ', e.message)
+});
+
+//Filtering data by passed COUNTRY
+app.get('/', (req, res) => {
+  const filtredData = _.filter(openData, item => item.country === 'Lithuania');
+  console.log(filtredData);
 });
 
 async function getData() {
